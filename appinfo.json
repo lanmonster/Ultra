@@ -9,11 +9,6 @@
   {
     "watchface": true
   },
-  "appKeys":
-  {
-    KEY_TEMPERATURE: 0,
-    KEY_CONDITIONS: 1
-  },
   "resources":
   {
     "media":
