@@ -5,40 +5,28 @@ static GBitmap *battery_image, *bluetooth_image, *dayOfWeek_image;
 static BitmapLayer *battery_image_layer, *bluetooth_image_layer, *dayOfWeek_layer;
 static TextLayer *charging_layer, *battery_layer, *time_layer, *date_layer;
 
+static const int WEEKDAYS[] = {
+    RESOURCE_ID_SUN,
+    RESOURCE_ID_MON,
+    RESOURCE_ID_TUE,
+    RESOURCE_ID_WED,
+    RESOURCE_ID_THU,
+    RESOURCE_ID_FRI,
+    RESOURCE_ID_SAT
+};
+
 static void handle_time_and_date() {
     time_t temp = time(NULL); 
     struct tm *current_time = localtime(&temp);
     char *time_format = "%R";
     static char time_text[6];
     static char date_text[17];
-    int weekday = current_time->tm_wday;
-    
+
     if (dayOfWeek_image)
         gbitmap_destroy(dayOfWeek_image);
 
-    switch (weekday) {
-        case 0:
-            dayOfWeek_image = gbitmap_create_with_resource(RESOURCE_ID_SUN);
-            break;
-        case 1:
-            dayOfWeek_image = gbitmap_create_with_resource(RESOURCE_ID_MON);            
-            break;
-        case 2:
-            dayOfWeek_image = gbitmap_create_with_resource(RESOURCE_ID_TUE);
-            break;
-        case 3:
-            dayOfWeek_image = gbitmap_create_with_resource(RESOURCE_ID_WED);
-            break;
-        case 4:
-            dayOfWeek_image = gbitmap_create_with_resource(RESOURCE_ID_THU);
-            break;
-        case 5:
-            dayOfWeek_image = gbitmap_create_with_resource(RESOURCE_ID_FRI);
-            break;
-        case 6:
-            dayOfWeek_image = gbitmap_create_with_resource(RESOURCE_ID_SAT);
-            break;
-    }
+    dayOfWeek_image = gbitmap_create_with_resource(WEEKDAYS[current_time->tm_wday]);
+    bitmap_layer_set_bitmap(dayOfWeek_layer, dayOfWeek_image);
     
     if (!clock_is_24h_style())
         time_format = "%I:%M";
